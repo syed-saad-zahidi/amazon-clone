@@ -1,7 +1,29 @@
+import { ImageSearch } from '@material-ui/icons';
 /* eslint-disable jsx-a11y/accessible-emoji */
-import React from 'react'
-import '../Product.css'
-function Product({title,image,price,rating}) {
+import React from 'react';
+import '../Product.css';
+import { useStateValue } from './StateProvider';
+
+
+
+function Product({id, title,image,price,rating}) {
+    const [Basket, dispatch] =useStateValue() 
+    console.log("this is the basket" , Basket)
+    const addToBasket = () => {
+         //dispatch the item into data layer
+         dispatch({
+             type:'Add_To_Basket',
+             item: {
+                 id:id,
+                 title:title,
+                 image:image,
+                 price:price,
+                 rating:rating,
+             }
+         })
+         
+     }
+    
     return (
         <div className="product">
             <div className="product_Info">
@@ -11,16 +33,17 @@ function Product({title,image,price,rating}) {
     <strong>{price}</strong>
                 </p>
                 <div className="product_rating">
-                    
-                    <p>🌟</p>
+                    {Array(rating).fill().map((_,i) =>
+                     <p>🌟</p>)}
+                   
                     
     
 
                 </div>
                 </div> 
-                <img src="https://images-na.ssl-images-amazon.com/images/I/41Ag4WE7uyL._SX324_BO1,204,203,200_.jpg" />
+             <img src={image} />
                 
-            <button>Add to Basket</button>
+            <button onClick={addToBasket}> Add to Basket</button>
         </div>
     );
 }
